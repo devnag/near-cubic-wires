@@ -26,8 +26,8 @@ and Lean checks: those nine statements ⇒ Theorem 2.5, using only Lean's three 
    `Check.lean`. It takes about 2½ hours on a large machine (measured: 2 h 13 min on 90 cores). The build is
    limited by a long chain of dependent modules, so fewer cores add less time than you might expect. It needs about
    65 GB of disk; 32 GB of RAM is recommended.
-3. While it runs, check the 9 pages in [`SourceMapping/`](SourceMapping/): one for each group of published
-   results, plus Theorem 2.5. Each puts a published sentence beside the Lean definition that must say the same
+3. While it runs, check the pages in [`SourceMapping/`](SourceMapping/): eight pages for the nine published
+   statements (page 6 covers two), plus one for Theorem 2.5. Each puts a published sentence beside the Lean definition that must say the same
    thing, with a short list of what to check.
 
 ## Reading the output
@@ -39,19 +39,20 @@ hypotheses are exactly the nine below, in this order, and the conclusion is Theo
 
 ## What is assumed
 
-| Hypothesis | Published result | Class | Page |
-|---|---|---|---|
-| `CTW26_Lemma3_2` | Chen, Tal, Wang (ECCC TR26-039) Lemma 3.2, after Muroga, Toda, Takasu (1961); PDF p. 10 | literal | [1](SourceMapping/1-threshold-normalization.md) |
-| `CW19_Proposition18_2_TM2` | Chen, Williams (CCC 2019) Proposition 18(2); PDF p. 14 | literal, construction in Mathlib's machine model | [2](SourceMapping/2-decomposition.md) |
-| `Williams14_Corollary4_4` | Williams (J. ACM 2014) Corollary 4.4 = C.2; PDF pp. 17, 29 | literal, multitape reading | [3](SourceMapping/3-matrix-product.md) |
-| `HLW06_Theorem8_2` | Hoory, Linial, Wigderson (Bull. AMS 2006) Construction 8.1 / Theorem 8.2; PDF p. 65 | literal | [4](SourceMapping/4-expander.md) |
-| `RS62_Theorem4_eq314` | Rosser, Schoenfeld (1962) Theorem 4, (3.14); PDF p. 7 | literal | [5](SourceMapping/5-prime-theta.md) |
-| `CLW20_Lemma3_10_TM2` | Chen, Lyu, Williams (ECCC TR20-150) Lemma 3.10, after Ben-Sasson, Viola; PDF p. 18 | literal, algorithm in Mathlib's machine model | [6](SourceMapping/6-pcp.md) |
-| `CLW20_Lemma3_11_explicitEnc_TM2` | Chen, Lyu, Williams Lemma 3.11, after CW19 and VW20; PDF p. 18 | literal + documented fix (n ≥ 2, encoder written out) | [6](SourceMapping/6-pcp.md) |
-| `CLW20_Theorem1_13` | Chen, Lyu, Williams Theorem 1.13 (refuter with an NP oracle); PDF p. 6 | literal, multitape reading | [7](SourceMapping/7-refuter.md) |
-| `CLW20_Lemma3_9_TM2` | Chen, Lyu, Williams Lemma 3.9, after Sudan, Trevisan, Vadhan Theorem 24; PDF p. 18 | literal, algorithm in Mathlib's machine model | [8](SourceMapping/8-amplifier.md) |
+| # | Hypothesis | Published result | Class | Page |
+|---|---|---|---|---|
+| 1 | `CTW26_Lemma3_2` | Chen, Tal, Wang (ECCC TR26-039) Lemma 3.2, after Muroga, Toda, Takasu (1961); PDF p. 10 | literal | [1](SourceMapping/1-threshold-normalization.md) |
+| 2 | `CW19_Proposition18_2_TM2` | Chen, Williams (CCC 2019) Proposition 18(2); PDF p. 14 | literal, construction in Mathlib's machine model | [2](SourceMapping/2-decomposition.md) |
+| 3 | `Williams14_Corollary4_4` | Williams (J. ACM 2014) Corollary 4.4 = C.2; PDF pp. 17, 29 | literal, multitape reading | [3](SourceMapping/3-matrix-product.md) |
+| 4 | `HLW06_Theorem8_2` | Hoory, Linial, Wigderson (Bull. AMS 2006) Construction 8.1 / Theorem 8.2; PDF p. 65 | literal | [4](SourceMapping/4-expander.md) |
+| 5 | `RS62_Theorem4_eq314` | Rosser, Schoenfeld (1962) Theorem 4, (3.14); PDF p. 7 | literal | [5](SourceMapping/5-prime-theta.md) |
+| 6 | `CLW20_Lemma3_10_TM2` | Chen, Lyu, Williams (ECCC TR20-150) Lemma 3.10, after Ben-Sasson, Viola; PDF p. 18 | literal, algorithm in Mathlib's machine model | [6](SourceMapping/6-pcp.md) |
+| 7 | `CLW20_Lemma3_11_explicitEnc_TM2` | Chen, Lyu, Williams Lemma 3.11, after CW19 and VW20; PDF p. 18 | literal + documented fix (n ≥ 2, encoder written out) | [6](SourceMapping/6-pcp.md) |
+| 8 | `CLW20_Theorem1_13` | Chen, Lyu, Williams Theorem 1.13 (refuter with an NP oracle); PDF p. 6 | literal, multitape reading | [7](SourceMapping/7-refuter.md) |
+| 9 | `CLW20_Lemma3_9_TM2` | Chen, Lyu, Williams Lemma 3.9, after Sudan, Trevisan, Vadhan Theorem 24; PDF p. 18 | literal, algorithm in Mathlib's machine model | [8](SourceMapping/8-amplifier.md) |
 
-The conclusion, `NearCubicWires.Paper.theorem_2_5`, is compared with the paper on
+Hypotheses 6 and 7 share page 6: CLW20 Lemmas 3.10 and 3.11 are used together as one PCP step. The conclusion,
+`NearCubicWires.Paper.theorem_2_5`, is compared with the paper on
 [`SourceMapping/theorem-2-5.md`](SourceMapping/theorem-2-5.md). CLW20 Lemma 3.8 (the XOR lemma) is not assumed:
 Lean proves it, following the paper's proof in CLW20 Appendix A.
 
