@@ -80,6 +80,12 @@ the development (for example the `Repair…` namespaces); renaming them is a lar
   refuter's promise machines guess ⌊n/16⌋ bits, within the printed n/10.
 - E^NP is ordinary exponential time with an NP oracle, and L = ⌈log₂(n+2)⌉ (page "Theorem 2.5").
 
+## AI use
+
+Generative-AI models were used substantively to write this formalization, as they were for the paper (see its AI
+Disclosure). The result does not depend on trusting them: Lean's kernel checks the proof, and the `SourceMapping/`
+pages let a reader check that the assumed statements match the published papers.
+
 ## Optional extra checks
 
 - `make kernel-replay`: re-check every declaration with Lean's independent `leanchecker` (slow; parallel).
