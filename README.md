@@ -1,7 +1,11 @@
 # Near-cubic wire lower bounds for SYM∘THR and THR∘THR: a Lean proof of Theorem 2.5
 
 This repository contains a complete Lean 4 proof of Theorem 2.5 of "Almost-Everywhere Near-Cubic Wire Lower
-Bounds for SYM∘THR and THR∘THR" (Dev Nag; the paper's source is [`paper/paper.tex`](paper/paper.tex)):
+Bounds for SYM∘THR and THR∘THR" (Dev Nag; ECCC [TR26-167](https://eccc.weizmann.ac.il/report/2026/167/);
+[doi:10.5281/zenodo.21984711](https://doi.org/10.5281/zenodo.21984711)). [`paper/paper.tex`](paper/paper.tex) is
+version 1 (17 August 2026, [doi:10.5281/zenodo.21984712](https://doi.org/10.5281/zenodo.21984712)), the version this
+proof was checked against; Theorem 2.5 is unchanged in version 2 (15 September 2026,
+[doi:10.5281/zenodo.22773981](https://doi.org/10.5281/zenodo.22773981)):
 
 > For every fixed 0<γ<1/2, there exist a common language F_γ ∈ E^NP and positive constants b_{S,γ}, b_{T,γ}
 > such that, for every sufficiently large n, agreement at least 1/2+γ with (F_γ)_n implies
