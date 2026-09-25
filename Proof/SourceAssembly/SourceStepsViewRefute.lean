@@ -1,0 +1,45 @@
+import Proof.SourceAssembly.SourceStepsEnc
+
+section
+set_option autoImplicit false
+set_option maxRecDepth 120000
+set_option warningAsError true
+set_option linter.unusedVariables false
+
+open NearCubicWires NearCubicWires.ComponentwisePolynomial NearCubicWires.RepairOrdinary.CompetitorRawFieldEmit NearCubicWires.RepairOrdinary.CloseoutRowsOriginalSchedule LocalBitMultitape ExtDecompositionBatch RepairOrdinary RepairRepresentation SourceInterfaces RepairSource RepairSource.CloseoutFinal P1TopDown RepairSource.VerifierDecoding RecoveryRootRound RecoveryExecution CloseoutRowsEstimator CloseoutRowsEstimatorCoefficients CompetitorSelectedCount MatrixScoreBatch CompetitorCountMask SupplierPipeline SupplierEstimator SupplierPrime CanonicalFourfoldRowProgram CloseoutRawRows C10ExternalRowLoop C10ThresholdNaturalRowPrint C10ThresholdParityRow C10ThresholdEstimateRowJoin CloseoutFinalC10RowAnswerWord P1Closure P1TopDownPaidReusable P1TopDownPaidReusableReserves P1TopDownPaidBinaryReserves
+open PCJ1fef9807c6954e94_Native PCJ515eaa990d75455b_FamilyInit
+open PCJ9eff70d512234a4c_Fixed PCJd4d1d9d7d1fa4313_Production
+open PCJc4297ab269d8423a_Source
+open NearCubicWires.SourceConstruction NearCubicWires.SourceSkeleton
+namespace NearCubicWires.SourceSteps
+noncomputable section
+attribute [local irreducible] P1TopDownPaidPayload.tapes
+
+section code
+variable (mask : MaskProducer) {selector : CyclicChoice.Laws}
+  (packets : PCJc4297ab269d8423a_Source.PacketLibrary selector)
+  (rows : PCJc4297ab269d8423a_Source.RowLibrary selector) (sources : EightSources)
+  (res : Nat) (hres : 19 ≤ res) {gamma : Real} (p : Parameters sources gamma) (k r : Nat)
+
+set_option hygiene false in
+local notation "𝔇" => dimsOf mask packets rows sources res p k r
+set_option hygiene false in
+local notation "𝒽" => UOf_le mask packets rows sources res p k r
+set_option hygiene false in
+local notation "𝒞" => skelCodeR mask packets rows sources res hres p k r ph refill preF
+
+/-- `enc kk = encT kk` for `kk < 5`. -/
+theorem enc_eq_encT (ph : Phase) (refill : Σ s, Machine (UR mask packets rows sources res p k r) s)
+    (preF : Σ s, Machine (UR mask packets rows sources res p k r + 1) s) (kk : Fin 13) (hk : kk.val < 5) :
+    (𝒞).enc ⟨kk.val, by omega⟩ = Dims.encT (d := 𝔇) 𝒽 kk := by
+  apply Fin.ext
+  show (if kk.val = 5 then _ else _) = _
+  rw [if_neg (by omega)]
+  simp only [Dims.encT, dimsOf]
+  rw [if_pos hk]
+
+end code
+
+end
+end NearCubicWires.SourceSteps
+end

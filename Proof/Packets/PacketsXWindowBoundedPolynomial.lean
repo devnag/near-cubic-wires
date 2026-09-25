@@ -1,0 +1,16 @@
+import Proof.Packets.PacketsXWindowProviderPolynomial
+import Proof.Packets.PacketsXWindowResourceGuard
+
+/-! Complete normalized window/substitution execution with its raw/native
+space and fuel guards discharged from the original census bounds. -/
+set_option autoImplicit false
+set_option maxHeartbeats 300000
+set_option maxRecDepth 120000
+set_option warningAsError true
+namespace PCJ9eff70d512234a4c_Fixed.Materializer.WindowProvider
+open NearCubicWires NearCubicWires.LocalBitMultitape NearCubicWires.RepairOrdinary
+open NearCubicWires.ExtDecompositionBatch NearCubicWires.CanonicalFourfoldRowProgram
+open CloseoutRowsRawPairSeek (cacheWord)
+open NormalizedFiniteTransport WindowNativeOrder SubstitutionCensus Theorem25Completion.CycleBounds
+
+end PCJ9eff70d512234a4c_Fixed.Materializer.WindowProvider

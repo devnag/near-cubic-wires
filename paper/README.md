@@ -1,0 +1,1 @@
+`paper.tex` is the LaTeX source, unchanged, of "Almost-Everywhere Near-Cubic Wire Lower Bounds for SYM∘THR and THR∘THR" by Dev Nag; it is licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), not under the repository's Apache-2.0 license.

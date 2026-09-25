@@ -1,0 +1,25 @@
+name = "near_cubic_wires"
+version = "1.0.0"
+defaultTargets = ["NearCubicWires"]
+
+[leanOptions]
+maxHeartbeats = 250000
+maxRecDepth = 120000
+warningAsError = true
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.32.0"
+
+[[lean_lib]]
+name = "NearCubicWires"
+roots = ["MainTheorem"]
+globs = ["MainTheorem", "Statement", "StatementChecks.+", "Proof.+", "Bindings.+"]
+
+# For comparator only (README, "Optional extra checks"); `make` does not build them.
+[[lean_lib]]
+name = "Challenge"
+
+[[lean_lib]]
+name = "Solution"

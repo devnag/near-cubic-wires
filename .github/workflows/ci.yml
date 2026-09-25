@@ -1,0 +1,24 @@
+name: checks
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  names:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check_names.py .
+  statement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+      - run: ~/.elan/bin/lake exe cache get
+      - run: ~/.elan/bin/lake build Challenge   # Statement.lean and Challenge.lean only
+  full:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ${{ vars.FULL_BUILD_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android || true
+      - run: curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+      - run: PATH=$HOME/.elan/bin:$PATH make

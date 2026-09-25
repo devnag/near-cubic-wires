@@ -1,0 +1,24 @@
+import Proof.Packets.SrcInitFitV4
+import Proof.SourceAssembly.SourceB
+import Proof.SourceAssembly.SourceFactorSelItem4AtS
+import Proof.SourceAssembly.SourceFactorSelWordsWin
+import Proof.SourceAssembly.SourceRequestSelCostTotal
+import Proof.SourceAssembly.SourceRequestSelKeptS
+import Proof.SourceAssembly.SourceRequestSelOk
+import Proof.SourceAssembly.SourceSkelCaps
+import Proof.SourceAssembly.SourceSkelFirstW
+import Proof.SourceAssembly.SourceSkelInitE3
+import Proof.SourceAssembly.SourceSkelParamsV3
+import Proof.SourceAssembly.SourceStepsEntryInv3
+import Proof.SourceAssembly.SourceStepsFirstOut
+import Proof.SourceAssembly.SourceStepsIndexFit
+import Proof.SourceAssembly.SourceStepsResidue
+import Proof.SourceAssembly.SourceStepsSeam
+
+set_option autoImplicit false
+set_option maxHeartbeats 250000
+set_option maxRecDepth 120000
+set_option warningAsError true
+namespace SourcePlanHubC
+theorem hub : True := trivial
+end SourcePlanHubC

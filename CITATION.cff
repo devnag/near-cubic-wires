@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this Lean proof, please cite the paper it formalizes."
+title: "Near-cubic wire lower bounds for SYM∘THR and THR∘THR: a Lean proof of Theorem 2.5"
+type: software
+authors:
+  - family-names: Nag
+    given-names: Dev
+    orcid: "https://orcid.org/0009-0006-7304-8082"
+repository-code: "https://github.com/devnag/near-cubic-wires"
+license: Apache-2.0
+preferred-citation:
+  type: article
+  title: "Almost-Everywhere Near-Cubic Wire Lower Bounds for SYM∘THR and THR∘THR"
+  authors:
+    - family-names: Nag
+      given-names: Dev
+      orcid: "https://orcid.org/0009-0006-7304-8082"
+  year: 2026
+  notes: "The paper's LaTeX source is paper/paper.tex in this repository."

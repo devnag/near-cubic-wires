@@ -1,0 +1,14 @@
+import Proof.Hierarchy.CompetitorCountTableRecord
+
+set_option autoImplicit false
+set_option maxHeartbeats 250000
+set_option maxRecDepth 120000
+set_option warningAsError true
+
+namespace NearCubicWires.P1Plan.DirectCount
+open LocalBitMultitape RepairOrdinary RecoveryRootRound RecoveryExecution
+open RepairRepresentation MatrixScoreBatch CompetitorSelectedCount CompetitorCountMask
+open CompetitorCrossScheduler (producer)
+
+
+end NearCubicWires.P1Plan.DirectCount

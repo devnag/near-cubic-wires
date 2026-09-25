@@ -1,0 +1,14 @@
+import Proof.Packets.AddressedAtomMaterialize
+import Proof.Packets.PacketsXCycleDenseAtomBudget
+
+set_option autoImplicit false
+set_option maxHeartbeats 600000
+set_option warningAsError true
+namespace Theorem25Completion.CycleAddressedAtomCost
+open NearCubicWires NearCubicWires.LocalBitMultitape NearCubicWires.RepairOrdinary
+open NearCubicWires.ExtDecompositionBatch
+open PCJ9eff70d512234a4c_Fixed.Materializer
+open CloseoutRowsRawPairSeek (Pair)
+open CycleBounds CycleDenseAtomCost
+
+end Theorem25Completion.CycleAddressedAtomCost

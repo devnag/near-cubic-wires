@@ -1,0 +1,62 @@
+import Proof.PCP.PCPPQueryCapacity
+
+/-! Allocated index buffers for arbitrary repeated SAME-cache queries.
+Only the existing index tape is padded. All operations use the same machines. -/
+namespace NearCubicWires.RepairOrdinary.PCPPQueryIndexPadding
+open LocalBitMultitape RepairRepresentation SourceInterfaces RepairSource.VerifierDecoding
+set_option autoImplicit false
+set_option maxHeartbeats 250000
+set_option maxRecDepth 120000
+set_option warningAsError true
+
+
+
+def clauseCaps (C : ℕ) (j : Fin 19) := if j=14 then C else 0
+def clauseData (source : List Bool) (arity index C : ℕ) (result : List Bool) (j : Fin 19) :=
+  if j=14 then ZeroPadding.pad C (UnaryTemplate.tape index) else PCPPQueryClauseReuse.data source arity index C result j
+noncomputable def clauseEntry (source : List Bool) (arity index C : ℕ) :=
+  ZeroPadding.config (clauseCaps C) (PCPPQueryClauseReuse.entry source arity index C)
+
+theorem clause_config (source : List Bool) (arity index C : ℕ) (result : List Bool)
+    {states : ℕ} (q : Fin states) :
+    ZeroPadding.config (clauseCaps C) ⟨q,PCPPQueryClauseReuse.heads,PCPPQueryClauseReuse.data source arity index C result⟩=
+      ⟨q,PCPPQueryClauseReuse.heads,clauseData source arity index C result⟩ := by
+  apply configuration_ext
+  · rfl
+  · rfl
+  · funext j
+    fin_cases j <;> simp [clauseCaps,clauseData,ZeroPadding.config,ZeroPadding.pad_zero]
+    rfl
+
+theorem clause_entry (source : List Bool) (arity index C : ℕ) :
+    clauseEntry source arity index C=⟨PCPPQueryClauseReuse.machine.start,PCPPQueryClauseReuse.heads,clauseData source arity index C []⟩ := by
+  rw [clauseEntry,PCPPQueryClauseReuse.entry_literal,clause_config]
+
+theorem clause_run (a : PointwisePCPPAlgorithm) (r : PCPPRequest a.minimumArity)
+    (i : Fin (2^(a.output r).clauseBits)) :
+    let C := PCPPQueryCachedBounds.capacity a (r.circuit.size+r.arity)
+    ∃ receipt,runFrom PCPPQueryClauseReuse.machine (PCPPQueryCachedBounds.callBudget a (r.circuit.size+r.arity))
+      (clauseEntry (pcppOutput r (a.output r)) r.arity i.val C)=some receipt ∧
+      receipt.final.tapes=clauseData (pcppOutput r (a.output r)) r.arity i.val C
+        (natListWord [literalIndex ((a.output r).clauses i).left,literalIndex ((a.output r).clauses i).right]) ∧
+      receipt.final.heads=PCPPQueryClauseReuse.heads ∧
+      receipt.steps≤PCPPQueryCachedBounds.callBudget a (r.circuit.size+r.arity) := by
+  dsimp only
+  let C := PCPPQueryCachedBounds.capacity a (r.circuit.size+r.arity)
+  obtain ⟨base,hb,bt,bh,bs⟩ := PCPPQueryCachedBounds.clause_run a r i
+  obtain ⟨out,hr,hf,hs,_⟩ := ZeroPadding.run_config PCPPQueryClauseReuse.machine (clauseCaps C) _ _ base hb
+  refine ⟨out,hr,?_,?_,hs.le.trans bs⟩
+  · rw [hf]
+    change (ZeroPadding.config (clauseCaps C) base.final).tapes=_
+    have he : base.final=⟨base.final.control,PCPPQueryClauseReuse.heads,PCPPQueryClauseReuse.data (pcppOutput r (a.output r)) r.arity i.val C
+        (natListWord [literalIndex ((a.output r).clauses i).left,literalIndex ((a.output r).clauses i).right])⟩ := by
+      apply configuration_ext
+      · rfl
+      · exact bh
+      · exact bt
+    rw [he,clause_config]
+  · rw [hf]
+    exact bh
+
+
+end NearCubicWires.RepairOrdinary.PCPPQueryIndexPadding

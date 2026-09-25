@@ -1,0 +1,120 @@
+import Proof.Rows.ClosureOffsetSourceMeaning
+import Proof.Rows.CellScatter
+
+/-! Eight retained words physically produce the whole reusable gate bank.
+The computed source and assignment occur only in this small palette; none of
+the evaluator's copied masters or padded scratch tapes is supplied for free. -/
+set_option autoImplicit false
+set_option maxHeartbeats 3000000
+set_option maxRecDepth 120000
+set_option warningAsError true
+set_option linter.unusedSimpArgs false
+namespace PCJ45bee56da9f34d5a_CellGatePalette
+open NearCubicWires NearCubicWires.LocalBitMultitape
+open NearCubicWires.RepairOrdinary NearCubicWires.ExtDecompositionBatch
+open NearCubicWires.RepairOrdinary.RecoveryRootRound
+open NearCubicWires.RepairSource.CloseoutFinal NearCubicWires.RepairSource.VerifierDecoding
+open NearCubicWires.P1Closure NearCubicWires.ExtIncidence
+open NearCubicWires.RepairRepresentation
+noncomputable section
+
+def entryChoice : Nat→Option (Fin 8)
+  | 0=>some 0 | 9=>some 2 | 13=>some 3 | 14=>some 3
+  | 39=>some 1 | 40=>some 4 | 42=>some 5 | 46=>some 6 | _=>none
+def gateChoice (i : Fin 98) : Option (Fin 8) :=
+  if h : i.val<48 then entryChoice i.val
+  else if h' : i.val<95 then entryChoice (HardwireReusable.work ⟨i.val-48,by omega⟩).val
+  else if i=96 then some 7 else none
+def target (i : Fin 97) : Fin 98 := if h:i.val<34 then ⟨i.val,by omega⟩ else ⟨i.val+1,by omega⟩
+def choice (i : Fin 97) := gateChoice (target i)
+def words (source assignment : List Bool) (q w C R : Nat) : Fin 8→List Bool :=
+  ![source,assignment,List.replicate w true,frame (SignedSortKey.binary w 0),
+    List.replicate C true,CompareMachine.word q,CompareMachine.word 0,List.replicate R true]
+def gates (i : Fin 98) : Fin 108 :=
+  if h:i=34 then 107 else if h':i.val<34 then ⟨8+i.val,by omega⟩ else ⟨7+i.val,by omega⟩
+theorem gates_injective : Function.Injective gates := by
+  intro i j h
+  have hv:=congrArg Fin.val h
+  simp only [gates] at hv
+  split_ifs at hv <;> apply Fin.ext <;>simp_all only [Fin.val_ofNat,Fin.isValue] <;>omega
+
+def caps (U : Nat) (i : Fin 98) := if i=34 then 0 else U
+def heads (out : List Bool) (pos : Nat) : Fin 108→Nat :=
+  fun i=>if i=107 then out.length else if i=49 ∨ i=53 then pos else 0
+def cold (palette : Fin 8→List Bool) (U : Nat) (out : List Bool) : Fin 108→List Bool :=
+  Fin.addCases (motive:=fun _=>List Bool) (NativeFanout.reusableInput (m:=97) palette U) (fun _ : Fin 1=>out)
+def warm (palette : Fin 8→List Bool) (U : Nat) (out : List Bool) : Fin 108→List Bool :=
+  Fin.addCases (motive:=fun _=>List Bool) (NativeFanout.output choice palette U) (fun _ : Fin 1=>out)
+def fanout := TapeEmbedding.machine 1 (NativeFanout.machine choice)
+
+theorem head_gate (out : List Bool) (pos : Nat) (i : Fin 98) :
+    heads out pos (gates i)=HardwireReusable.heads out pos i := by
+  fin_cases i <;>rfl
+
+theorem warm_gate (palette : Fin 8→List Bool) (U : Nat) (out : List Bool) (i : Fin 98) :
+    warm palette U out (gates i)=
+      if i=34 then out else ZeroPadding.pad U ((gateChoice i).elim [] palette) := by
+  fin_cases i <;>rfl
+
+theorem fanout_run (palette : Fin 8→List Bool) (U : Nat) (out : List Bool)
+    (hU : ∀ i,(palette i).length≤U) :
+    Step fanout (2*U+4) (heads out 0) (cold palette U out)
+      (heads out 0) (warm palette U out) := by
+  have h:=(NativeFanout.reusable choice palette U hU).embed
+    (fun _ : Fin 1=>out.length) (fun _ : Fin 1=>out)
+  refine (h.congr_in ?_ rfl).congr ?_ rfl
+  all_goals funext i;fin_cases i <;>rfl
+
+theorem entry_pad (source assignment out : List Bool) (q w C D U : Nat)
+    (hC : C+1≤U) (hD : D≤U) (i : Fin 48) (hi : i≠34) :
+    ZeroPadding.pad U
+      (Fin.addCases (motive:=fun _=>List Bool)
+        (C10NaturalHardwireScoreInputs.data source assignment out w C D q 0 0)
+        OffsetSourceGate.extra i)=
+    ZeroPadding.pad U ((entryChoice i.val).elim [] (words source assignment q w C 0)) := by
+  fin_cases i <;>
+    simp [OffsetSourceGate.extra,C10NaturalHardwireScoreInputs.data,
+      C10NaturalHardwireScoreInputs.extra,C10NaturalHardwireTarget.input,
+      C10NaturalHardwireTarget.pairInput,C10NaturalHardwireTarget.pairExtra,
+      C10NaturalHardwireTarget.extra,CloseoutRowsPoolMagnitude.input,
+      entryChoice,words,MatrixScoreWeight.scalar,Fin.addCases,
+      MatrixBucketRootPower.pad_pad C U _ (by omega),
+      Rewind.Workspace.pad_zeros,Nat.max_eq_left (by omega : C≤U),
+      Nat.max_eq_left hC,Nat.max_eq_left hD] at hi ⊢
+  all_goals rfl
+
+theorem input_pad (xs : List CloseoutRowsPoolWeight.Item) (z : Int) (tail mtail out : List Bool)
+    (w C D R U : Nat) (hC : C+1≤U) (hD : D≤U) (hR : R+1≤U) (i : Fin 98) :
+    ZeroPadding.pad (caps U i) (OffsetSourceGate.input xs z tail mtail w C D R out i)=
+    warm (words (CloseoutRowsPoolWeight.word xs++intWord z++tail)
+      (CloseoutRowsPoolWeight.mask xs++mtail) xs.length w C R) U out (gates i) := by
+  rw [warm_gate]
+  by_cases hi:i=34
+  · subst i
+    simp [caps,OffsetSourceGate.input,Reusable48.input,Reusable48.padded,
+      HardwireReusable.state,HardwireReusable.caps,OffsetSourceGate.entry,
+      C10NaturalHardwireScoreInputs.data,C10NaturalHardwireTarget.input,
+      C10NaturalHardwireTarget.extra,Fin.addCases]
+  rw [if_neg hi]
+  have hp : R≤U := by omega
+  fin_cases i <;>
+    simp [caps,OffsetSourceGate.input,Reusable48.input,Reusable48.padded,
+      Reusable48.masters,HardwireReusable.state,HardwireReusable.caps,
+      OffsetSourceGate.entry,HardwireReusable.work,gateChoice,entryChoice,words,
+      OffsetSourceGate.extra,C10NaturalHardwireScoreInputs.data,
+      C10NaturalHardwireScoreInputs.extra,C10NaturalHardwireTarget.input,
+      C10NaturalHardwireTarget.pairInput,C10NaturalHardwireTarget.pairExtra,
+      C10NaturalHardwireTarget.extra,CloseoutRowsPoolMagnitude.input,
+      MatrixScoreWeight.scalar,Fin.addCases,
+      MatrixBucketRootPower.pad_pad R U _ hp,
+      MatrixBucketRootPower.pad_pad C U _ (by omega),
+      Rewind.Workspace.pad_zeros,Nat.max_eq_left hp,Nat.max_eq_left hR,
+      Nat.max_eq_left (max_le hp (by omega : C≤U)),
+      Nat.max_eq_left (max_le hp hC),Nat.max_eq_left (max_le hp hD),
+      Nat.max_eq_left (by omega : C≤U),Nat.max_eq_left hC,Nat.max_eq_left hD]
+      at hi ⊢
+  all_goals rfl
+
+
+end
+end PCJ45bee56da9f34d5a_CellGatePalette
